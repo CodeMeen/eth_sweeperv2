@@ -1,18 +1,71 @@
 const Web3 = require("web3");
 const EthereumTx = require('ethereumjs-tx').Transaction;
 const axios = require('axios');
-const networks = [
-    'https://mainnet.infura.io/v3/b64a1f176b30451da06a45377bca23a2',
-    'https://mainnet.infura.io/v3/d9adf57b44cd468fadd9ee7f9877b803',
-    'https://mainnet.infura.io/v3/af31f4d9b9cc4dbeb6606a15315a8679'
-]
-const ethNetwork = 'https://mainnet.infura.io/v3/b64a1f176b30451da06a45377bca23a2';
 
-const web3 = new Web3(new Web3.providers.HttpProvider(ethNetwork));
+//provider for transactions
 
+var currselect=''
+var providertype=0
+
+
+// Provider to check by block
 
 const { ethers } = require("ethers");
-const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/b64a1f176b30451da06a45377bca23a2");
+const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/b64a1f176b30451da06a45377bca23a2"); 
+
+
+var web3 = getProvider();
+
+
+function getProvider(){
+
+    let networks = [
+        {'type':0,'provider':'https://mainnet.infura.io/v3/67fe9b7c54f1408cba6144a2e040589e'},
+        {'type':1,'provider':'https://mainnet.infura.io/v3/d9adf57b44cd468fadd9ee7f9877b803'},
+        {'type':2,'provider':'https://mainnet.infura.io/v3/af31f4d9b9cc4dbeb6606a15315a8679'},
+        {'type':3,'provider':'https://mainnet.infura.io/v3/3867d8b1b27047faa9cdc19aac91c81e'},
+        {'type':4,'provider':'https://mainnet.infura.io/v3/c8fd017cd19141b3853fe4f6b2b00a64'},
+        {'type':5,'provider':'https://mainnet.infura.io/v3/23e82254ea524275a81d798c5ca7f823'}   
+    ]
+
+   if(providertype==0){
+
+        currselect=networks[1].provider;
+        providertype=1
+
+        console.log('This')
+
+    }else if(providertype==1){
+        currselect=networks[2].provider;
+        providertype=2
+
+    }else if(providertype==2){
+        currselect=networks[3].provider;
+        providertype=3
+
+    }else if(providertype==3){
+        currselect=networks[4].provider;
+        providertype=4
+
+    }else if(providertype==4){
+
+        currselect=networks[5].provider;
+        providertype=5
+
+    }else if(providertype==5){
+        currselect=networks[0].provider;
+        providertype=0
+    }
+
+    console.log('Provider: '+currselect);
+   
+
+    let web3x=new Web3(new Web3.providers.HttpProvider(currselect));
+
+    return web3x;
+
+}
+
 
 // Gas prices Options
 // auto : adjusts gas price according to acct balance
@@ -20,19 +73,35 @@ const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io
 //high
 //medium
 //low
+
 const data = [{ privatekey: 'f876700df898d0fd9833cc768e8a46fcdbe36036bcc541bfa32d1ecf647e2361', address: '0xa5975a07f862e965392b1b2ac1e04bf2764813f4', name: 'Wallet 1', rcvaddr: '0x8045acca205c53e8d5acfa7ef452ad7318864eb9', gaspricetype: 'auto' }]
 
 
 const bot = async() => {
     provider.on("block", async(blocknumber) => {
+
+        web3=getProvider();
+
         console.log('\n');
         console.log("Listening new block, waiting.." + blocknumber);
 
         for (let i = 0; i < data.length; i++) {
             try {
                 await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);
+                
             } catch (error) {
-                console.log('Couldnt finish transaction!\n}');
+                try {
+                    await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);
+                    
+                } catch (error) {
+                    try {
+                        await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);  
+                        
+                    } catch (error) {
+                        
+                        console.log('Couldnt finish transaction!\n}');
+                    }
+                }
             }
         }
 
