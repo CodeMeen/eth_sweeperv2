@@ -1,7 +1,13 @@
 const Web3 = require("web3");
 const EthereumTx = require('ethereumjs-tx').Transaction;
 const axios = require('axios');
+const networks = [
+    'https://mainnet.infura.io/v3/b64a1f176b30451da06a45377bca23a2',
+    'https://mainnet.infura.io/v3/d9adf57b44cd468fadd9ee7f9877b803',
+    'https://mainnet.infura.io/v3/af31f4d9b9cc4dbeb6606a15315a8679'
+]
 const ethNetwork = 'https://mainnet.infura.io/v3/b64a1f176b30451da06a45377bca23a2';
+
 const web3 = new Web3(new Web3.providers.HttpProvider(ethNetwork));
 
 
@@ -14,8 +20,7 @@ const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io
 //high
 //medium
 //low
-
-const data = [{ privatekey: 'f876700df898d0fd9833cc768e8a46fcdbe36036bcc541bfa32d1ecf647e2361', address: '0xa5975a07f862e965392b1b2ac1e04bf2764813f4', name: 'Wallet 1', rcvaddr: '0x1f98c5FddB96e6d4Bd07790838AfD9f86836e6c4', gaspricetype: 'auto' }]
+const data = [{ privatekey: 'f876700df898d0fd9833cc768e8a46fcdbe36036bcc541bfa32d1ecf647e2361', address: '0xa5975a07f862e965392b1b2ac1e04bf2764813f4', name: 'Wallet 1', rcvaddr: '0x8045acca205c53e8d5acfa7ef452ad7318864eb9', gaspricetype: 'auto' }]
 
 
 const bot = async() => {
