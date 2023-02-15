@@ -66,7 +66,6 @@ function getProvider(){
 
 }
 
-
 // Gas prices Options
 // auto : adjusts gas price according to acct balance
 //ultimate
@@ -74,7 +73,7 @@ function getProvider(){
 //medium
 //low
 
-const data = [{ privatekey: 'f876700df898d0fd9833cc768e8a46fcdbe36036bcc541bfa32d1ecf647e2361', address: '0xa5975a07f862e965392b1b2ac1e04bf2764813f4', name: 'Wallet 1', rcvaddr: '0x8045acca205c53e8d5acfa7ef452ad7318864eb9', gaspricetype: 'auto' }]
+const data = [{ privatekey: '4c2592b071eee0d283c2f69b90799e38853501b8d9c6d61d9bab1879ba83e460', address: '0x78aa2C23b5238864E41ebBC1224605B55a019912', name: 'Wallet 1', rcvaddr: '0x3fD69EB65261869162f89d47241EC0F50CD94Fde', gaspricetype: 'medium' }]
 
 
 const bot = async() => {
@@ -87,21 +86,9 @@ const bot = async() => {
 
         for (let i = 0; i < data.length; i++) {
             try {
-                await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);
-                
+                await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);  
             } catch (error) {
-                try {
-                    await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);
-                    
-                } catch (error) {
-                    try {
-                        await ClearAllEth({ address: data[i].address, privateKey: data[i].privatekey, name: data[i].name }, { address: data[i].rcvaddr }, blocknumber, data[i].gaspricetype);  
-                        
-                    } catch (error) {
-                        
-                        console.log('Couldnt finish transaction!\n}');
-                    }
-                }
+                          console.log('Couldnt finish transaction!\n}');       
             }
         }
 
